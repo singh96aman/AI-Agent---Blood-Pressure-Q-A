@@ -27,6 +27,14 @@ class MongoDB:
         collection = self.client[self.db_name][collection]
         collection.update_one({'_id': doc_id}, {'$set': doc}, upsert=True)
     
+    def get_distinct(self, collection, coll_name):
+        collection = self.client[self.db_name][collection]
+        return collection.distinct(coll_name)
+
+    def get_all(self, collection):
+        collection = self.client[self.db_name][collection]
+        return collection.find({})
+    
     def update_doc(self, collection, doc_id, key, val):
         collection = self.client[self.db_name][collection]
         collection.find_one_and_update({'_id':doc_id},

@@ -4,6 +4,10 @@ from constants import Constants
 import pandas as pd
 import hashlib
 from argparse import ArgumentParser
+import warnings
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
 
 def _load_data_into_db(db, df, collection):
     for i, row in df.iterrows():
@@ -15,9 +19,8 @@ def _load_data_into_db(db, df, collection):
         if not db.doc_exists(collection, doc_id):
             db.add_doc(collection, doc_id, doc)
 
-def _load():
+def _load(db):
     file_list = ['vitals.csv', 'medication.csv']
-    db = MongoDB(db_name='patient')
     df_vitals = _load_dataset(file_list[0],)
     _load_data_into_db(db, df_vitals, 'vitals')
     df_medication = _load_dataset(file_list[1])
@@ -30,27 +33,35 @@ def _load():
 def _load_dataset(file):
     df = pd.read_csv('data/'+file)
     
-    # Generate random hash for each row
     hashes = []
     for index, row in df.iterrows():
-        # Combine all row values to create a unique string
         row_str = ''.join([str(val) for val in row])
-        # Generate hash using MD5 algorithm
         hash_value = hashlib.md5(row_str.encode()).hexdigest()
         hashes.append(hash_value)
     
-    # Add hash column to DataFrame
     df['hash'] = hashes
     return df
 
-def _run_agent():
-    print('Running Agent')
-    
+def _run_agent(db):
+    agent = Agent(db)
+    agent.run_agent()
 
-def main():
-    print('Starting Blood Pressure Q&A Agent...')
-    _load()
-    _run_agent()
+def _analyze_agent_response(db):
+    analysis = Analysis(db)
+    analysis.run_analysis()
+
+def main():   
+    print('Starting Blood Pressure Q&A Agent...\n\n')
+    db = MongoDB(db_name='patient')
+
+    print('\nLoading Data into DB....\n')
+    _load(db)
+
+    print('\nRunning LLM Agent...\n\n')
+    _run_agent(db)
+
+    print('\nAnalyzing LLM Agent Responses...\n\n')
+    _analyze_agent_response(db)
 
 if __name__ == "__main__":
     main()
