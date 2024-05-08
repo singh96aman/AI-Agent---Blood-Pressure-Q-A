@@ -6,12 +6,6 @@ import hashlib
 from argparse import ArgumentParser
 import warnings
 
-from dotenv import load_dotenv
-loaded = load_dotenv()
-if not loaded:
-    print('No .env file found')
-    sys.exit(1)
-
 # Suppress warnings
 warnings.filterwarnings("ignore")
 
