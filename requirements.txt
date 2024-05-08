@@ -2,4 +2,3 @@ pandas
 openai
 pymongo
 tabulate
-dotenv
