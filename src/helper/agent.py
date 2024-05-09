@@ -48,15 +48,15 @@ class Agent:
             reference_text = df_pid.to_csv(index=False)
             pid_q1 = self.q1.format(reference=reference_text)
             doc_id = hashlib.md5(pid_q1.encode()).hexdigest()
-            #pid_q1_response = self.openai.predict(pid_q1)
-            pid_q1_response = 'HyperTension'
+            pid_q1_response = self.openai.predict(pid_q1)
+            #pid_q1_response = 'HyperTension'
             response = {
                 'PatientID' : pid,
                 'Timestamp': datetime.now(),
                 'Prompt' : pid_q1,
                 'Response' : pid_q1_response
             }
-            #self.db.add_doc('responses',doc_id, response)
+            self.db.add_doc('responses',doc_id, response)
             #print(pid, pid_q1_response)
 
     def _find_patient_was_given_medication_to_treat_hypertension(self, medication):
@@ -65,15 +65,15 @@ class Agent:
             reference_text = df_pid.to_csv(index=False)
             pid_q2 = self.q2.format(reference=reference_text)
             doc_id = hashlib.md5(pid_q2.encode()).hexdigest()
-            #pid_q2_response = self.openai.predict(pid_q2)
-            pid_q2_response = 'Test_Yes'
+            pid_q2_response = self.openai.predict(pid_q2)
+            #pid_q2_response = 'Test_Yes'
             response = {
                 'PatientID' : pid,
                 'Timestamp': datetime.now(),
                 'Prompt' : pid_q2,
                 'Response' : pid_q2_response
             }
-            #self.db.add_doc('responses',doc_id, response)
+            self.db.add_doc('responses',doc_id, response)
             #print(pid, pid_q2_response)
 
 
