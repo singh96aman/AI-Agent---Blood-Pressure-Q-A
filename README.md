@@ -10,25 +10,24 @@ Develop a blood-pressure Q&A agent to answer the following questions based on pa
 ## Workflow
 1. Agent loads data from data folder and saves in DB.
 2. Agent then queries OpenAI GPT-4 to with above questions and data retrieved from DB.
-3. Agent Responses are stored in DB and Users can query AI responses for a given patient ID at their own convenience. 
+3. Agent Responses stored in DB are retrieved and analyze against heuristic logic predictions.
+
+## Submssion
+From the Video Submission and Submission Logs, we can see that patient 1 has Hypertension and has been provided with the appropriate medicine.
+Patient 2 however has Hypotension has not yet been provided with the appropriate medicine.
 
 ## Data and DB
 Datasets need to be loaded in `data\___.csv` folder and DB used is MongoDB Atlas (URI in `constants\constants.py`) 
+Please add a `.env` file where you can put your `OPENAI_KEY`. Note - OpenAI doesn't allow pushing these keys on Github.
 
-## Run Modes
-### Run entire Agent Workflow in Default mode
-`python main.py`
+## LLM Agent Templates
 
-### Loading Data to DB
-`python main.py -l vitals,medication`
+All templates are visible [click here](https://github.com/singh96aman/AI-Agent---Blood-Pressure-Q-A/blob/main/src/helper/templates.py)
 
-### Running BloodPressure Q&A Agent for a given patient ID
-`python main.py -r`
+## Video  and Submission Log
 
-### Running BloodPressure Q&A Agent for a given patient ID
-patient_id example - p1,p2
-`python main.py -r patient_ids`
+Please see the Video Submission where the Agent runs from Docker container, queries LLM and shows responses against heurstic logic [click here](https://github.com/singh96aman/AI-Agent---Blood-Pressure-Q-A/blob/main/VideoSubmission.mp4)
 
-### Analyze for a given patient IDs
-patient_id example - p1,p2
-`python main.py -a patient_ids`
+## Submission Logs
+
+From the submission logs, we can see that Patient

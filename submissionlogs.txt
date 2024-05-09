@@ -1,0 +1,80 @@
+ *  Executing task: docker run --rm -it  bloodpressureqaagent-my_python_app:latest 
+
+Starting Blood Pressure Q&A Agent...
+
+
+Connected to MongoDB successfully!
+
+Loading Data into DB....
+
+Loaded Vitals from CSV. Dims -  (8, 6)
+Loaded Medication from CSV. Dims -  (4, 9)
+
+Running LLM Agent...
+
+
+
+Analyzing LLM Agent Responses...
+
+
+
+###########################################
+
+
+Patient ID -  p1 
+
+LLM Agent Response for Vitals -  Hypertension
+LLM Agent Response for Medication Taken -  Yes
+
+Heuristic Logic - 
+
+|    | ObservationResult   | BloodPressureCondition   |
+|---:|:--------------------|:-------------------------|
+|  0 | 186/82              | Hypertension             |
+
+Vitals for Reference - 
+
+|    | ComponentID   | ObservationDate     | ObservationResult   | ObservationUnits   | PatientID   |
+|---:|:--------------|:--------------------|:--------------------|:-------------------|:------------|
+|  0 | BloodPressure | 2023-12-04 21:21:00 | 186/82              | mmHg               | p1          |
+|  1 | Temp          | 2023-12-04 21:21:00 | 97.5                | F                  | p1          |
+|  2 | Pulse         | 2023-12-04 21:21:00 | 77                  | nan                | p1          |
+|  3 | Resp          | 2023-12-04 21:21:00 | 17                  | nan                | p1          |
+
+Medication for Reference -
+
+|    | ProviderInstructions                                                                                                         |    
+|---:|:-----------------------------------------------------------------------------------------------------------------------------|    
+|  0 | StatIf both oral and IV options are ordered for same pain level, administer IV if patient not able to take oral medications. |    
+|  1 | Administer if Systolic BP GREATER than 160                                                                                   |    
+|  2 | Do not crush, split, or chew.                                                                                                |    
+
+###########################################
+
+
+Patient ID -  p2
+
+LLM Agent Response for Vitals -  Hypotension
+LLM Agent Response for Medication Taken -  No
+
+Heuristic Logic -
+
+|    | ObservationResult   | BloodPressureCondition   |
+|---:|:--------------------|:-------------------------|
+|  4 | 108/63              | Normal                   |
+|  5 | 68/41               | Hypotension              |
+
+Vitals for Reference -
+
+|    | ComponentID   | ObservationDate     | ObservationResult   | ObservationUnits   | PatientID   |
+|---:|:--------------|:--------------------|:--------------------|:-------------------|:------------|
+|  4 | BloodPressure | 2023-11-29 12:32:00 | 108/63              | mmHg               | p2          |
+|  5 | BloodPressure | 2023-11-29 12:52:00 | 68/41               | mmHg               | p2          |
+|  6 | Temp          | 2023-11-29 15:23:00 | 97.8                | F                  | p2          |
+|  7 | Temp          | 2023-11-29 11:20:00 | 98.8                | F                  | p2          |
+
+Medication for Reference -
+
+|    | ProviderInstructions                     |
+|---:|:-----------------------------------------|
+|  3 | Per Treatment. Pack Port 1; For Dialysis |
