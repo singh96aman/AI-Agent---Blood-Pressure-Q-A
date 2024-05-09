@@ -12,7 +12,7 @@ Develop a blood-pressure Q&A agent to answer the following questions based on pa
 2. Agent then queries OpenAI GPT-4 to with above questions and data retrieved from DB.
 3. Agent Responses stored in DB are retrieved and analyze against heuristic logic predictions.
 
-## Submssion
+## Submission
 From the Video Submission and Submission Logs, we can see that patient 1 has Hypertension and has been provided with the appropriate medicine.
 Patient 2 however has Hypotension has not yet been provided with the appropriate medicine.
 
