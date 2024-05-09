@@ -26,11 +26,7 @@ All templates are visible [click here](https://github.com/singh96aman/AI-Agent--
 
 ## Video  and Submission Log
 
-Please see the Video Submission where the Agent runs from Docker container, queries LLM and shows responses against heurstic logic 
+Please see the Video/Log Submission where the Agent runs from Docker container, queries LLM and shows responses against heurstic logic 
 
 Video [click here](https://github.com/singh96aman/AI-Agent---Blood-Pressure-Q-A/blob/main/VideoSubmission.mp4)
 Logs [click here](https://github.com/singh96aman/AI-Agent---Blood-Pressure-Q-A/blob/main/submissionlogs.txt)
-
-## Submission Logs
-
-From the submission logs, we can see that Patient
