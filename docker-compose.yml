@@ -6,4 +6,5 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/app
+      - ./.env:/src/.env
     restart: always

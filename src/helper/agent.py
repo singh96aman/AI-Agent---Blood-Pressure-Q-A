@@ -42,39 +42,26 @@ class Agent:
        self.q2 = QUESTION2_PROMPT.prompt
        self.openai = OpenAIModel()
 
-    def _find_patient_had_hyperhypotension(self, vitals):
-        for pid in vitals['PatientID'].unique():
-            df_pid = vitals[vitals['PatientID'] == pid].drop(['_id', 'PatientID'], axis=1)
+    def _query_agent(self, df, type):
+        for pid in df['PatientID'].unique():
+            df_pid = df[df['PatientID'] == pid].drop(['_id', 'PatientID'], axis=1)
             reference_text = df_pid.to_csv(index=False)
-            pid_q1 = self.q1.format(reference=reference_text)
-            doc_id = hashlib.md5(pid_q1.encode()).hexdigest()
-            pid_q1_response = self.openai.predict(pid_q1)
-            #pid_q1_response = 'HyperTension'
+            if type == 'vitals':
+                pid_q = self.q1.format(reference=reference_text)
+            else:
+                pid_q = self.q2.format(reference=reference_text)
+            pid_q_response = self.openai.predict(pid_q)
+            #pid_q_response = 'HyperTension'
             response = {
                 'PatientID' : pid,
+                'Type' : type,
                 'Timestamp': datetime.now(),
-                'Prompt' : pid_q1,
-                'Response' : pid_q1_response
+                'Prompt' : pid_q,
+                'Response' : pid_q_response
             }
+            doc_id = hashlib.md5(str(response).encode()).hexdigest()
             self.db.add_doc('responses',doc_id, response)
-            #print(pid, pid_q1_response)
-
-    def _find_patient_was_given_medication_to_treat_hypertension(self, medication):
-        for pid in medication['PatientID'].unique():
-            df_pid = medication[medication['PatientID'] == pid].drop(['_id', 'PatientID'], axis=1)
-            reference_text = df_pid.to_csv(index=False)
-            pid_q2 = self.q2.format(reference=reference_text)
-            doc_id = hashlib.md5(pid_q2.encode()).hexdigest()
-            pid_q2_response = self.openai.predict(pid_q2)
-            #pid_q2_response = 'Test_Yes'
-            response = {
-                'PatientID' : pid,
-                'Timestamp': datetime.now(),
-                'Prompt' : pid_q2,
-                'Response' : pid_q2_response
-            }
-            self.db.add_doc('responses',doc_id, response)
-            #print(pid, pid_q2_response)
+            #print(pid, pid_q_response)
 
 
     def _load_patient_data_from_db(self, collection):
@@ -84,6 +71,6 @@ class Agent:
     def run_agent(self):
         vitals = self._load_patient_data_from_db('vitals')
         medication = self._load_patient_data_from_db('medication')
-        self._find_patient_had_hyperhypotension(vitals)
-        self._find_patient_was_given_medication_to_treat_hypertension(medication)
+        self._query_agent(vitals, 'vitals')
+        self._query_agent(medication, 'medication')
 

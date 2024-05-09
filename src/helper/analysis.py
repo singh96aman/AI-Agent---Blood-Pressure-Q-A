@@ -30,6 +30,10 @@ class Analysis:
         df['BloodPressureCondition'] = df.apply(classify_blood_pressure, axis=1)
         return df[["ObservationResult","BloodPressureCondition"]].to_markdown()
 
+    def get_response(self, pid_responses, type):
+        temp = pid_responses[pid_responses['Type'] == type]
+        return temp[temp['Timestamp'] == temp['Timestamp'].max()]['Response'].iloc[0]
+
     def run_analysis(self):
         vitals = self._load_patient_data_from_db('vitals').drop(columns='_id')
         medication = self._load_patient_data_from_db('medication').drop(columns='_id')
@@ -38,10 +42,13 @@ class Analysis:
             pid_vitals = vitals[vitals['PatientID'] == pid]
             pid_medication = medication[medication['PatientID'] == pid]
             pid_responses = responses[responses['PatientID'] == pid]
-            pid_responses = pid_responses[pid_responses['Timestamp'] == pid_responses['Timestamp'].min()]['Response'].iloc[0]
+            vital_response = self.get_response(pid_responses, 'vitals')
+            medication_response = self.get_response(pid_responses, 'medication')
+
             print('\n###########################################\n')
             print('\nPatient ID - ', pid, '\n')
-            print('LLM Agent Response - ', pid_responses)
+            print('LLM Agent Response for Vitals - ', vital_response)
+            print('LLM Agent Response for Medication Taken - ', medication_response)
             print('\nHeuristic Logic - \n')
             print(self.getHyperHypoTension(pid_vitals))
             print('\nVitals for Reference - \n')
